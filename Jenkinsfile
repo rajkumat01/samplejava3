@@ -3,7 +3,7 @@
     def snapName=''
     //def deployName = 'TEST'
     //def deployName ='PerformanceApp2_dep__0'	
-    def deployName ='PerfApp92_dep__0'
+    def deployName ='PerformanceApp2_dep__0'
     def exportFormat ='json'
     def configFilePath = "paymentService"
     def fileNamePrefix ='exported_file_'

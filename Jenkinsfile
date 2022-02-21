@@ -1,9 +1,6 @@
-    //def appName='E2E_App'
-    def appName='PerformanceApp2'
+    def appName='App_3'
     def snapName=''
-    //def deployName = 'TEST'
-    //def deployName ='PerformanceApp2_dep__0'	
-    def deployName ='PerformanceApp2_dep__0'
+    def deployName ='Dep_1'
     def exportFormat ='json'
     def configFilePath = "paymentService"
     def fileNamePrefix ='exported_file_'
@@ -12,16 +9,16 @@
     def snapshotName=""
     def exporterName ='returnAllData' 
 
-    // def namePath ="E2E/pipelineUpload/${currentBuild.number}"
-//    def namePath ='component1'
-    def namePath ="PerformanceApp2_dep__coll__comp_0/${JOB_NAME}/${currentBuild.number}"
+    //def namePath ="E2E/pipelineUpload/${currentBuild.number}"
+    def namePath ='Comp_2'
+    //def namePath ="Comp_2/${JOB_NAME}/${currentBuild.number}"
 pipeline {
     agent any
     stages {
         stage('Clone repository') {               
            steps{
                 // checkout scm
-                git branch: 'master', url: 'https://github.com/vivekkaushik1/samplejava'
+                git branch: 'master', url: 'https://github.com/rajkumat01/samplejava2'
            }
         }     
         stage('Validate Configurtion file'){
@@ -29,7 +26,7 @@ pipeline {
                 script{
                     sh "echo validating configuration file ${configFilePath}.${exportFormat}"
                     echo "name path ::::: ${namePath}"
-                    changeSetId = snDevOpsConfigUpload(applicationName:"${appName}",target:'component',namePath:"${namePath}", configFile:"component1.json", autoCommit:true,autoValidate:true,dataFormat:"${exportFormat}")
+                    changeSetId = snDevOpsConfigUpload(applicationName:"${appName}",target:'component',namePath:"${namePath}", configFile:"fileB.json", autoCommit:true,autoValidate:true,dataFormat:"${exportFormat}")
                     // snDevOpsConfigUpload(applicationName:"${appName}",target:'deployable',namePath:"${namePath}", fileName:"deployable", autoCommit:'true',autoValidate:'true',dataFormat:"${exportFormat}",changesetNumber:"${changeSetId}", deployableName:"${deployName}")
                     echo "validation result $changeSetId"
                 }
@@ -39,7 +36,7 @@ pipeline {
             steps{
                 script{
                     echo "Change set registration for ${changeSetId}"
-                    changeSetRegResult = snDevOpsConfigRegisterChangeSet(changesetNumber:"${changeSetId}")
+                    changeSetRegResult = snDevOpsConfigRegisterPipeline(changesetNumber:"${changeSetId}")
                     echo "change set registration set result ${changeSetRegResult}"
                 }
             }
@@ -106,6 +103,13 @@ pipeline {
                 echo " ++++++++++++ END OF File content ***************"
                 echo "deploy finished successfully."
             }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Run E2ESamplePipeLine3_1!'
+            build job: 'E2ESamplePipeLine3_1', parameters: [string(name: 'MY_PARAM', value: 'value from Build pipeline')]
         }
     }
 }

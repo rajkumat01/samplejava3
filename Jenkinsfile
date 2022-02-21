@@ -15,10 +15,17 @@
 pipeline {
     agent any
     stages {
+        
+          stage('E2E_Pipeline3_1') {
+            steps {
+                echo "Running E2E_Pipeline3_1..........."
+                echo "MY_PARAM=${env.MY_PARAM}"
+            }
+        }
         stage('Clone repository') {               
            steps{
                 // checkout scm
-                git branch: 'master', url: 'https://github.com/rajkumat01/samplejava2'
+                git branch: 'master1', url: 'https://github.com/rajkumat01/samplejava2'
            }
         }     
         stage('Validate Configurtion file'){
@@ -105,11 +112,5 @@ pipeline {
             }
         }
     }
-    
-    post {
-        success {
-            echo 'Run E2ESamplePipeLine3_1!'
-            build job: 'E2ESamplePipeLine3_1', parameters: [string(name: 'MY_PARAM', value: 'value from Build pipeline')]
-        }
-    }
+   
 }
